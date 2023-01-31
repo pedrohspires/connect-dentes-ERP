@@ -1,21 +1,24 @@
 import { BrowserRouter } from "react-router-dom";
 import Router from "./Router";
 import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   return (
     <BrowserRouter>
-      <ToastContainer 
+      <ToastContainer
         position="top-right"
         autoClose={5000}
         hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
         rtl={false}
-        newestOnTop
-        draggable  
+        pauseOnFocusLoss
+        draggable
         pauseOnHover
-        closeButton
+        theme="dark"
       />
-      <div>
+      <div className="h-screen">
         <Router />
       </div>
     </BrowserRouter>
