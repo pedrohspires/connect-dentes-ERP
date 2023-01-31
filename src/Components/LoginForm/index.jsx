@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import InputLogin from '../InputLogin';
 import { Login } from '../../Services/Auth'
 import { toast } from "react-toastify";
+import FormButton from "../FormButton";
 
 function LoginForm() {
   const navigate = useNavigate();
@@ -36,33 +37,29 @@ function LoginForm() {
   }
 
   return (
-    <div className="login-form-content w-full">
-      <form className="grid place-items-center" onSubmit={realizaLogin}>
-        <InputLogin 
-          id="email"
-          nome="Email" 
-          type="email"
-          placeholder="Insira seu email"
-          disabled={loading}
-          value={email}
-          onChange={setEmail}
-        />
+    <form className="grid place-items-center" onSubmit={realizaLogin}>
+      <InputLogin 
+        id="email"
+        nome="Email" 
+        type="email"
+        placeholder="Insira seu email"
+        disabled={loading}
+        value={email}
+        onChange={setEmail}
+      />
 
-        <InputLogin 
-          id="senha"
-          nome="Senha" 
-          type="password"
-          placeholder="Insira sua senha"
-          disabled={loading}
-          value={senha}
-          onChange={setSenha}
-        />
+      <InputLogin 
+        id="senha"
+        nome="Senha" 
+        type="password"
+        placeholder="Insira sua senha"
+        disabled={loading}
+        value={senha}
+        onChange={setSenha}
+      />
 
-        <button className="w-28 rounded-xl mt-4 p-4 border-2 bg-paleta-500 border-paleta-900 hover:bg-paleta-700 hover:border-paleta-500">
-          Entrar
-        </button>
-      </form>
-    </div>
+      <FormButton texto="Entrar" />
+    </form>
   )
 }
 
