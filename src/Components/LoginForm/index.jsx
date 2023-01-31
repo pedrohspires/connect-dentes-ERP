@@ -23,13 +23,15 @@ function LoginForm() {
       toast.update(toastLoading, {
         render: "Login realizado com sucesso",
         type: "success",
-        isLoading: false
+        isLoading: false,
+        autoClose: 5000
       });
     } else {
       toast.update(toastLoading, {
         render: response.mensagem,
         type: "error",
-        isLoading: false
+        isLoading: false,
+        autoClose: 5000
       });
     }
 

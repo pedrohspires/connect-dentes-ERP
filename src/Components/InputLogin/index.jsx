@@ -10,7 +10,7 @@ function InputLogin({ id, nome, type, placeholder, disabled, value, onChange }) 
       <label className="mt-5 text-xl" htmlFor={id}>{nome}</label>
       <input 
         id={id} 
-        className="p-4 rounded-2xl w-full bg-paleta-500"
+        className="p-4 rounded-2xl w-full bg-paleta-700 text-paleta-100"
         type={type} 
         placeholder={placeholder} 
         disabled={disabled}
