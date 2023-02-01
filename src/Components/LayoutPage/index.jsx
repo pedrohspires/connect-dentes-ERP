@@ -65,7 +65,7 @@ function LayoutPage() {
             leaveFrom="translate-x-0"
             leaveTo="-translate-x-full"
           >
-            <div className="relative flex-1 flex flex-col max-w-xs w-full pb-4 bg-gray-800">
+            <div className="relative flex-1 flex flex-col max-w-xs w-full pb-4 bg-paleta-900">
               <Transition.Child
                 as={Fragment}
                 enter="ease-in-out duration-300"
@@ -104,7 +104,7 @@ function LayoutPage() {
                         <Link
                           key={key}
                           to={item.link}
-                          className='text-gray-300 hover:bg-gray-700 hover:text-white group flex items-center px-2 py-2 text-base font-medium rounded-md'
+                          className='text-gray-300 hover:bg-paleta-500 hover:text-white group flex items-center px-2 py-2 text-base font-medium rounded-md'
                         >
                           {icons[item.reactIcon]()}
                           {item.nome}
@@ -129,7 +129,7 @@ function LayoutPage() {
         </Dialog>
       </Transition.Root>
       <div className={`flex flex-col ${menuOpen ? "md:pl-80" : ''}`}>
-        <div className="sticky top-0 z-40 flex-shrink-0 flex h-16 bg-white shadow">
+        <div className="sticky top-0 z-40 flex-shrink-0 flex h-16 bg-paleta-900 shadow">
           <button
             type="button"
             className={`${menuOpen ? 'hidden' : ''} px-4 border-r border-gray-200 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500`}
@@ -142,9 +142,9 @@ function LayoutPage() {
             <div className="ml-4 flex items-center md:ml-6">
               <Menu as="div" className="ml-3 relative">
                 <div>
-                  <Menu.Button className="max-w-xs bg-white flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                  <Menu.Button className="max-w-xs px-4 py-2 bg-paleta-100 flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                     <span className="sr-only">Abrir menu</span>
-                    <h1 className='mr-4 font-semibold text-indigo-600'>{"Pedro Henrique"}</h1>
+                    <h1 className='mr-4 font-semibold text-paleta-900'>{"Pedro Henrique"}</h1>
                     <img
                       className="object-contain h-8 w-8 rounded-full"
                       src={"./user.png"}
@@ -161,12 +161,12 @@ function LayoutPage() {
                   leaveFrom="transform opacity-100 scale-100"
                   leaveTo="transform opacity-0 scale-95"
                 >
-                  <Menu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+                  <Menu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-paleta-900 ring-1 ring-black ring-opacity-5 focus:outline-none">
                     <Menu.Item>
                       {() => (
                         <div
                           onClick={() => handleSair()}
-                          className='block px-4 py-2 text-sm text-gray-700 cursor-pointer'
+                          className='block px-4 py-2 text-sm text-paleta-100 cursor-pointer'
                         >
                           Sair
                         </div>
@@ -179,7 +179,7 @@ function LayoutPage() {
           </div>
         </div>
 
-        <main className="flex-1 bg-gray-100">
+        <main className="flex-1 bg-paleta-100">
           <Outlet />
         </main>
       </div>
