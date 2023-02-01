@@ -1,4 +1,5 @@
 import { useRoutes } from "react-router-dom";
+import LayoutPage from "../Components/LayoutPage";
 import Login from "../Pages/Login";
 
 function Router() {
@@ -6,6 +7,13 @@ function Router() {
     {
       path: "/login",
       element: <Login />
+    },
+    {
+      path: "/",
+      element: <LayoutPage />,
+      children: [
+        
+      ]
     }
   ];
 
