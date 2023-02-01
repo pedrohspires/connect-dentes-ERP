@@ -1,5 +1,6 @@
 import { useRoutes } from "react-router-dom";
 import LayoutPage from "../Components/LayoutPage";
+import Atendimento from "../Pages/Atendimento";
 import Login from "../Pages/Login";
 
 function Router() {
@@ -12,7 +13,14 @@ function Router() {
       path: "/",
       element: <LayoutPage />,
       children: [
-        
+        {
+          path: "/",
+          element: <Atendimento />
+        },
+        {
+          path: "/Atendimento",
+          element: <Atendimento />
+        }
       ]
     }
   ];
