@@ -2,6 +2,7 @@ import { Link, Outlet, useNavigate } from 'react-router-dom';
 import { Fragment, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { getItensMenu } from '../../Services/Menu';
+import { GetUsuarioLogado } from '../../Services/Auth';
 
 import { GrFormClose } from 'react-icons/gr';
 import { HiMenuAlt2 } from 'react-icons/hi';
@@ -15,14 +16,18 @@ function LayoutPage() {
   const navigate = useNavigate();
   const [itensMenu, setItensMenu] = useState([]);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [usuarioLogado, setUsuarioLogado] = useState(false);
 
-  const verificaUsuarioLogado = () => {
+  const verificaUsuarioLogado = async () => {
     const token = localStorage.getItem("@token");
+    const response = await GetUsuarioLogado();
 
-    if (!token) {
+    if (!token || !response.sucesso) {
       toast.error("Permissão negada! Realize login.");
       navigate("/login");
     }
+
+    setUsuarioLogado(response.data);
   }
 
   const carregaItensMenu = async () => {
@@ -38,7 +43,7 @@ function LayoutPage() {
     navigate("/login");
   }
 
-  useEffect(verificaUsuarioLogado, []);
+  useEffect(() => { verificaUsuarioLogado() }, []);
   useEffect(() => { carregaItensMenu() }, []);
   
   return (
@@ -144,7 +149,7 @@ function LayoutPage() {
                 <div>
                   <Menu.Button className="max-w-xs px-4 py-2 bg-paleta-100 flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                     <span className="sr-only">Abrir menu</span>
-                    <h1 className='mr-4 font-semibold text-paleta-900'>{"Pedro Henrique"}</h1>
+                    <h1 className='mr-4 font-semibold text-paleta-900'>{usuarioLogado.nome}</h1>
                     <img
                       className="object-contain h-8 w-8 rounded-full"
                       src={"./user.png"}

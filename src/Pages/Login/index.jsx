@@ -4,17 +4,21 @@ import logo from "../../Assets/Imagens/logo.png";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import MenuForm from "../../Components/MenuForm";
+import { GetUsuarioLogado } from "../../Services/Auth";
 
 function Login() {
   const navigate = useNavigate();
   const [tipoFormulario, setTipoFormulario] = useState("entrar");
 
-  const verificaUsuarioLogado = () => {
-    if(localStorage.getItem("@token"))
+  const verificaUsuarioLogado = async () => {
+    const token = localStorage.getItem("@token");
+    const response = await GetUsuarioLogado();
+
+    if(token && response.sucesso)
       navigate("/");
   }
 
-  useEffect(verificaUsuarioLogado, []);
+  useEffect(() => {verificaUsuarioLogado()}, []);
 
   return (
     <main className="relative w-screen h-screen bg-paleta-900 grid place-items-center text-paleta-100">

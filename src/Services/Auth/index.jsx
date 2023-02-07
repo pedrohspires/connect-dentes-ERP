@@ -47,3 +47,27 @@ export const Register = async (dadosRequest) => {
     }
   }
 }
+
+export const GetUsuarioLogado = async () => {
+  const axios = await instance();
+
+  try{
+    const response = await axios.get('/Usuario/Logado');
+    return {
+      sucesso: true,
+      data: response.data
+    }
+  } catch(error){
+    if(!error.message){
+      return {
+        sucesso: false,
+        mensagem: "Não foi possível conectar ao servidor!"
+      }
+    }
+
+    return {
+      sucesso: false,
+      mensagem: error.response.data
+    }
+  }
+}
