@@ -18,7 +18,6 @@ function Atendimento() {
   const [dadosExcluindo, setDadosExcluindo] = useState(undefined);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalDeleteOpen, setModalDeleteOpen] = useState(false);
-  const columns = ["Id", "Paciente", "Medico responsável", "Detalhes", "Ações"];
 
   const customModalStyle = {
     content: {
@@ -141,8 +140,14 @@ function Atendimento() {
       </div>
 
       <Table
-        columnsHeaders={columns}
         rows={dataTable}
+        columnsHeaders={[
+          {titulo: "Id", ordenavel: true, columnName: "id"},
+          {titulo: "Paciente", ordenavel: true, columnName: "nomePaciente"}, 
+          {titulo: "Medico responsável", ordenavel: true, columnName: "medico"}, 
+          {titulo: "Detalhes", ordenavel: true, columnName: "detalhes"}, 
+          {titulo: "Ações",  ordenavel: false, columnName: "acoes"}
+        ]}
         columns={{
           id: (value) => value,
           nomePaciente: (value) => value,
