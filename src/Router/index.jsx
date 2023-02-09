@@ -1,6 +1,7 @@
 import { useRoutes } from "react-router-dom";
 import LayoutPage from "../Components/LayoutPage";
 import Atendimento from "../Pages/Atendimento";
+import Cliente from "../Pages/Cliente";
 import Login from "../Pages/Login";
 
 function Router() {
@@ -20,6 +21,10 @@ function Router() {
         {
           path: "/Atendimento",
           element: <Atendimento />
+        },
+        {
+          path: "/Cliente",
+          element: <Cliente />
         }
       ]
     }
