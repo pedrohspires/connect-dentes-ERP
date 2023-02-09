@@ -111,7 +111,7 @@ function LayoutPage() {
                           to={item.link}
                           className='text-gray-300 hover:bg-paleta-500 hover:text-white group flex items-center px-2 py-2 text-base font-medium rounded-md'
                         >
-                          {icons[item.reactIcon]()}
+                          <span className='px-2'>{icons[item.reactIcon]()}</span>
                           {item.nome}
                         </Link>
                       ))}
