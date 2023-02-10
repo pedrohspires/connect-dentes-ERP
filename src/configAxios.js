@@ -19,4 +19,20 @@ const getAxios = async (timeout = 30000) => {
   }
 }
 
+export const getAxiosCustomUrl = async (url, token, timeout = 30000) => {
+  try{
+    const instance = axios.create({
+      baseURL: url,
+      timeout: timeout,
+      headers: {
+        'Authorization': token
+      }
+    });
+
+    return instance;
+  } catch(error) {
+    console.log(error);
+  }
+}
+
 export default getAxios;
