@@ -71,3 +71,27 @@ export const GetUsuarioLogado = async () => {
     }
   }
 }
+
+export const GetAcessos = async (controller) => {
+  const axios = await instance();
+
+  try{
+    const response = await axios.post('/Usuario/Acessos', {controller});
+    return {
+      sucesso: true,
+      data: response.data
+    }
+  } catch(error){
+    if(!error.message){
+      return {
+        sucesso: false,
+        mensagem: "Não foi possível conectar ao servidor!"
+      }
+    }
+
+    return {
+      sucesso: false,
+      mensagem: error.response.data
+    }
+  }
+}
