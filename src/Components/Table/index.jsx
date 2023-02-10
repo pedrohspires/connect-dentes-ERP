@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import RowTable from '../RowTable';
+import EmptyTable from '../EmptyTable';
 import { FaArrowAltCircleDown, FaArrowAltCircleUp } from 'react-icons/fa';
 
 function Table({ columnsHeaders, rows, columns }) {
@@ -37,7 +38,6 @@ function Table({ columnsHeaders, rows, columns }) {
 
   useEffect(() => setOrdenedRows(rows), [rows]);
   useEffect(() => getOrdenableColumns(), []);
-
   return (
     <div className="relative overflow-x-auto rounded-xl">
       <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -63,11 +63,15 @@ function Table({ columnsHeaders, rows, columns }) {
           </tr>
         </thead>
         <tbody>
-          {ordenedRows.map((row, key) => {
-            return <RowTable key={key} dataRow={row} columns={columns} />;
-          })}
+          { ordenedRows.length > 0 
+            && 
+            ordenedRows.map((row, key) => {
+              return <RowTable key={key} dataRow={row} columns={columns} />;
+            })
+          }
         </tbody>
       </table>
+      {ordenedRows.length == 0 && <EmptyTable />}
     </div>
   )
 }
