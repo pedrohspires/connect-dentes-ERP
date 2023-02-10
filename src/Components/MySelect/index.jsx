@@ -1,7 +1,7 @@
 import Select from 'react-select';
 
 const MySelect = (props) => {
-  const { nome, opcoes, isRequired, placeholder, className, opcaoDefault } = props;
+  const { nome, opcoes, isRequired, placeholder, className, opcaoDefault, value } = props;
   const { isDisabled, isLoading, isClearable, isSearchable, onChange } = props;
 
   const customStyles = {
@@ -37,11 +37,12 @@ const MySelect = (props) => {
   };
 
   return (
-    <>
+    <div>
       <label className='font-bold'>{nome} <b hidden={!isRequired} className='text-red-500'>*</b></label>
       <Select
         className={className || "w-full bg-paleta-500 text-white rounded-md"}
         defaultValue={opcaoDefault}
+        value={value}
         isDisabled={isDisabled}
         isLoading={isLoading}
         isClearable={isClearable}
@@ -52,7 +53,7 @@ const MySelect = (props) => {
         placeholder={placeholder}
         onChange={onChange}
       />
-    </>
+    </div>
   );
 };
 
