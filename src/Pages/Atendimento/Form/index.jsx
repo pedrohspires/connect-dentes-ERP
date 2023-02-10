@@ -4,10 +4,12 @@ import { InputForm, InputTextAreaForm } from '../../../Components/InputForm';
 import arcadaDentaria from '../../../Assets/Imagens/arcada-dentaria.png';
 import InputCheckbox from '../../../Components/InputCheckbox';
 import MySelect from '../../../Components/MySelect';
-import { GetMedicos } from '../../../Services/Atendimento';
+import { GetMedicos, GetClientes } from '../../../Services/Atendimento';
+import { toast } from 'react-toastify';
 
 function Form({ onSubmit, botaoEsquerdo, botaoDireito, cliqueEsquerdo, cliqueDireito, dadosEditar }) {
   const [medicoSelecionado, setMedicoSelecionado] = useState({});
+  const [clienteSelecionado, setClienteSelecionado] = useState({});
   const [nomePaciente, setNomePaciente] = useState("");
   const [detalhes, setDetalhes] = useState("");
   const [observacoes, setObservacoes] = useState("");
@@ -16,6 +18,7 @@ function Form({ onSubmit, botaoEsquerdo, botaoDireito, cliqueEsquerdo, cliqueDir
   const [dataRetorno, setDataRetorno] = useState("");
 
   const [medicos, setMedicos] = useState(false);
+  const [clientes, setClientes] = useState(false);
   const [loading, setLoading] = useState(true);
 
   const getDadosForm = async (event) => {
@@ -34,6 +37,7 @@ function Form({ onSubmit, botaoEsquerdo, botaoDireito, cliqueEsquerdo, cliqueDir
 
     const dadosModal = {
       medicoId: medicoSelecionado.value,
+      clienteId: clienteSelecionado.value,
       nomePaciente,
       detalhes,
       observacoes,
@@ -43,7 +47,7 @@ function Form({ onSubmit, botaoEsquerdo, botaoDireito, cliqueEsquerdo, cliqueDir
     }
 
     let salvoComSucesso = await onSubmit(dadosModal);
-    if(salvoComSucesso){
+    if (salvoComSucesso) {
       setMedicoSelecionado({});
       setNomePaciente("");
       setDetalhes("");
@@ -61,7 +65,7 @@ function Form({ onSubmit, botaoEsquerdo, botaoDireito, cliqueEsquerdo, cliqueDir
     for (let i = 0; i < 32; i++)
       dentesTemp.push(false);
 
-    if(dentesEditar)
+    if (dentesEditar)
       dentesEditar.forEach(denteCheck => dentesTemp[denteCheck - 1] = true);
 
     setDentes(dentesTemp);
@@ -87,16 +91,35 @@ function Form({ onSubmit, botaoEsquerdo, botaoDireito, cliqueEsquerdo, cliqueDir
       return options;
     }
 
+    toast.error("Erro ao carregar os medicos: " + response.mensagem);
     return false;
   }
+  
+  const getSelectClientes = async () => {
+    const response = await GetClientes();
+    
+    if (response.sucesso) {
+      const options = response.data.map(item => ({
+        value: item.id,
+        label: item.nome
+      }));
 
+      setClientes(options)
+      return options;
+    }
+    
+    toast.error("Erro ao carregar os clientes: " + response.mensagem);    
+    return false;
+  }
+  
   const iniciaModal = async () => {
     iniciaDentes();
     let medicos = await getSelectMedicos();
-
+    let clientes = await getSelectClientes();
+    
     if (dadosEditar) {
       setMedicoSelecionado(medicos?.find(medico => medico.value === dadosEditar.medicoId))
-      setNomePaciente(dadosEditar.nomePaciente || '');
+      setClienteSelecionado(clientes?.find(cliente => cliente.value === dadosEditar.clienteId));
       setDetalhes(dadosEditar.detalhes || '');
       setObservacoes(dadosEditar.observacoes || '');
       setDataAtendimento(dadosEditar.dataAtendimento?.split('T')[0] || '');
@@ -120,21 +143,24 @@ function Form({ onSubmit, botaoEsquerdo, botaoDireito, cliqueEsquerdo, cliqueDir
           isClearable={false}
           isSearchable={true}
           isRequired={true}
-          opcaoDefault={medicos?.find(medico => medico.value === dadosEditar?.medicoId)}
           nome="Médico"
           placeholder="Selecione um médico"
           opcoes={medicos}
+          value={medicoSelecionado}
           onChange={setMedicoSelecionado}
         />
 
-        <InputForm
-          inputId="nomePaciente"
-          type="text"
-          nome="Nome do Paciente"
-          placeholder="Insira o nome do paciente"
-          value={nomePaciente}
-          setValue={setNomePaciente}
-          isRequired
+        <MySelect
+          isDisabled={loading}
+          isLoading={loading}
+          isClearable={false}
+          isSearchable={true}
+          isRequired={true}
+          value={clienteSelecionado}
+          nome="Cliente"
+          placeholder="Selecione um cliente"
+          opcoes={clientes}
+          onChange={setClienteSelecionado}
         />
 
         <InputTextAreaForm

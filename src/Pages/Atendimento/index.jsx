@@ -9,9 +9,11 @@ import Button from '../../Components/Button';
 import ModalHeader from '../../Components/ModalHeader';
 import AcoesDropdownMenu from '../../Components/AcoesDropdownMenu';
 import ButtonsModal from '../../Components/ButtonsModal';
+import { GetAcessos } from '../../Services/Auth';
 
 function Atendimento() {
   const [dataTable, setDataTable] = useState([]);
+  const [acessos, setAcessos] = useState();
   const [dadosEditar, setDadosEditar] = useState(undefined);
   const [idEditando, setIdEditando] = useState(undefined);
   const [idExcluindo, setIdExcluindo] = useState(undefined);
@@ -55,7 +57,6 @@ function Atendimento() {
     }
   }
 
-
   const getDataTable = async () => {
     const response = await GetAtendimentos();
     setDataTable([]);
@@ -66,6 +67,24 @@ function Atendimento() {
       toast.error(response.mensagem);
       setDataTable([]);
     }
+  }
+
+  const carregaAcessos = async () => {
+    const response = await GetAcessos("atendimento");
+    
+    if(response.sucesso){
+      setAcessos({
+        listar: response.data.includes("listar"),
+        cadastrar: response.data.includes("cadastrar"),
+        editar: response.data.includes("editar"),
+        excluir: response.data.includes("excluir")
+      });
+    }else toast.error(response.mensagem);
+  }
+
+  const iniciaPagina = async () => {
+    await getDataTable();
+    await carregaAcessos();
   }
 
   const getDadosEditar = async (id) => {
@@ -128,15 +147,17 @@ function Atendimento() {
     setModalDeleteOpen(false);
   }
 
-  useEffect(() => { getDataTable() }, [])
+  useEffect(() => { iniciaPagina() }, [])
 
   return (
     <div className="h-screen p-5 flex flex-col gap-4">
       <div className="flex justify-end">
-        <Button
-          texto="Adicionar"
-          onClick={adicionaAtendimento}
-        />
+        { acessos?.cadastrar &&
+          <Button
+            texto="Adicionar"
+            onClick={adicionaAtendimento}
+          />
+        }
       </div>
 
       <Table
