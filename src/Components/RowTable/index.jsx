@@ -10,7 +10,7 @@ function RowTable({ dataRow, columns }) {
             scope="row"
             className={key == 0 ? "px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white" : "px-6 py-4"}
           >
-            {column === "acoes" ? columns[column](dataRow) : dataRow[column] ? columns[column](dataRow[column]) : ""}
+            {column === "acoes" ? columns[column](dataRow) : dataRow[column] !== null ? columns[column](dataRow[column]) : ""}
           </th>
         )
       })}
