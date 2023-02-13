@@ -164,14 +164,14 @@ function Atendimento() {
         rows={dataTable}
         columnsHeaders={[
           {titulo: "Id", ordenavel: true, columnName: "id"},
-          {titulo: "Paciente", ordenavel: true, columnName: "nomePaciente"}, 
+          {titulo: "Paciente", ordenavel: true, columnName: "clienteId"}, 
           {titulo: "Medico responsável", ordenavel: true, columnName: "medico"}, 
           {titulo: "Detalhes", ordenavel: true, columnName: "detalhes"}, 
           {titulo: "Ações",  ordenavel: false, columnName: "acoes"}
         ]}
         columns={{
           id: (value) => value,
-          nomePaciente: (value) => value,
+          cliente: (value) => value.nome,
           medico: (value) => value.nome,
           detalhes: (value) => value,
           acoes: (row) => {
