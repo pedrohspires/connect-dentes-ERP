@@ -6,6 +6,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      zIndex: {
+        '100': '100',
+      },
       colors: {
         paleta: {
           100: "#cbdad5",
