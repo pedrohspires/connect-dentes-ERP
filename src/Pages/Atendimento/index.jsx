@@ -21,24 +21,6 @@ function Atendimento() {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalDeleteOpen, setModalDeleteOpen] = useState(false);
 
-  const customModalStyle = {
-    content: {
-      width: '80%',
-      backgroundColor: "#cbdad5",
-      top: '50%',
-      left: '50%',
-      right: 'auto',
-      bottom: 'auto',
-      padding: '0px',
-      marginRight: '-50%',
-      borderRadius: '10px',
-      transform: 'translate(-50%, -50%)'
-    },
-    overlay: {
-      zIndex: 100
-    }
-  }
-
   const customModalDeleteStyle = {
     content: {
       width: '50%',
@@ -56,6 +38,8 @@ function Atendimento() {
       zIndex: 100
     }
   }
+
+  //#region 
 
   const getDataTable = async () => {
     const response = await GetAtendimentos();
@@ -149,6 +133,7 @@ function Atendimento() {
 
   useEffect(() => { iniciaPagina() }, [])
 
+  //#endregion
   return (
     <div className="h-screen p-5 flex flex-col gap-4">
       <div className="flex justify-end">
@@ -197,7 +182,14 @@ function Atendimento() {
         }}
       />
 
-      <Modal isOpen={modalOpen} onRequestClose={closeModal} style={customModalStyle}>
+      <Modal 
+        isOpen={modalOpen} 
+        onRequestClose={closeModal} 
+        className="w-11/12 absolute drop-shadow-2xl bg-paleta-100 top-1/2 left-1/2 right-auto bottom-auto 
+                   p-0 -m-1/2 rounded-xl -translate-x-1/2 -translate-y-1/2
+                   xl:w-3/4"
+        overlayClassName="z-100 inset-0 fixed bg-paleta-100/50"
+      >
         <ModalHeader
           title="Atendimento"
           tag={idEditando ? idEditando : "Novo"}
