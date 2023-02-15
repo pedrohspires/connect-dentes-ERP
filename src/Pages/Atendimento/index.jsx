@@ -200,7 +200,7 @@ function Atendimento() {
       <Modal isOpen={modalOpen} onRequestClose={closeModal} style={customModalStyle}>
         <ModalHeader
           title="Atendimento"
-          tag="Novo"
+          tag={idEditando ? idEditando : "Novo"}
           onRequestClose={closeModal}
         />
 
