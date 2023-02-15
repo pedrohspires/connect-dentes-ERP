@@ -96,7 +96,7 @@ function Form({ onSubmit, botaoEsquerdo, botaoDireito, cliqueEsquerdo, cliqueDir
       return options;
     }
 
-    toast.error("Erro ao carregar os clientes: " + response.mensagem);
+    setClientes([]);
     return false;
   }
 
@@ -113,7 +113,7 @@ function Form({ onSubmit, botaoEsquerdo, botaoDireito, cliqueEsquerdo, cliqueDir
       return options;
     }
 
-    toast.error("Erro ao carregar os clientes: " + response.mensagem);
+    setAgendamentos([]);
     return false;
   }
 
