@@ -1,10 +1,10 @@
 import instance from "../../configAxios";
 
-export const GetAtendimentos = async () => {
+export const GetAgendamentos = async (filtros) => {
   const axios = await instance();
 
   try{
-    const response = await axios.get('/Atendimento');
+    const response = await axios.post('/Agendamento/Listar', filtros);
     return {
       sucesso: true,
       data: response.data
@@ -24,11 +24,11 @@ export const GetAtendimentos = async () => {
   }
 }
 
-export const GetAtendimentoById = async (id) => {
+export const GetAgendamentoById = async (id) => {
   const axios = await instance();
 
   try{
-    const response = await axios.get('/Atendimento/' + id);
+    const response = await axios.get('/Agendamento/' + id);
     return {
       sucesso: true,
       data: response.data
@@ -72,11 +72,11 @@ export const GetClientes = async () => {
   }
 }
 
-export const GetAgendamentos = async () => {
+export const GetHorarios = async (dados) => {
   const axios = await instance();
 
   try{
-    const response = await axios.get('/Agendamento/select');
+    const response = await axios.post('/Agendamento/HorariosDisponiveis', {dataAgendamento : dados});
     return {
       sucesso: true,
       data: response.data
@@ -96,11 +96,11 @@ export const GetAgendamentos = async () => {
   }
 }
 
-export const NovoAtendimento = async (dados) => {
+export const NovoAgendamento = async (dados) => {
   const axios = await instance();
 
   try{
-    const response = await axios.post('/Atendimento', dados);
+    const response = await axios.post('/Agendamento', dados);
     return {
       sucesso: true,
       data: response.data
@@ -120,11 +120,11 @@ export const NovoAtendimento = async (dados) => {
   }
 }
 
-export const EditarAtendimento = async (dados, id) => {
+export const EditarAgendamento = async (dados, id) => {
   const axios = await instance();
 
   try{
-    const response = await axios.put('/Atendimento/' + id, dados);
+    const response = await axios.put('/Agendamento/' + id, dados);
     return {
       sucesso: true,
       data: response.data
@@ -144,11 +144,11 @@ export const EditarAtendimento = async (dados, id) => {
   }
 }
 
-export const DeletarAtendimento = async (id) => {
+export const DeletarAgendamento = async (id) => {
   const axios = await instance();
 
   try{
-    const response = await axios.delete('/Atendimento/' + id);
+    const response = await axios.delete('/Agendamento/' + id);
     return {
       sucesso: true,
       data: response.data
