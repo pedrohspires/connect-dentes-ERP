@@ -4,12 +4,14 @@ import { InputForm, InputTextAreaForm } from '../../../Components/InputForm';
 import arcadaDentaria from '../../../Assets/Imagens/arcada-dentaria.png';
 import InputCheckbox from '../../../Components/InputCheckbox';
 import MySelect from '../../../Components/MySelect';
-import { GetMedicos, GetClientes } from '../../../Services/Atendimento';
+import { GetAgendamentos, GetClientes } from '../../../Services/Atendimento';
 import { toast } from 'react-toastify';
+import SwitchOptions from '../../../Components/SwitchOptions';
+import InputLoading from '../../../Components/InputLoading';
 
 function Form({ onSubmit, botaoEsquerdo, botaoDireito, cliqueEsquerdo, cliqueDireito, dadosEditar }) {
-  const [medicoSelecionado, setMedicoSelecionado] = useState({});
-  const [clienteSelecionado, setClienteSelecionado] = useState({});
+  const [clienteSelecionado, setClienteSelecionado] = useState();
+  const [agendamentoSelecionado, setAgendamentoSelecionado] = useState();
   const [nomePaciente, setNomePaciente] = useState("");
   const [detalhes, setDetalhes] = useState("");
   const [observacoes, setObservacoes] = useState("");
@@ -17,9 +19,11 @@ function Form({ onSubmit, botaoEsquerdo, botaoDireito, cliqueEsquerdo, cliqueDir
   const [dataAtendimento, setDataAtendimento] = useState("");
   const [dataRetorno, setDataRetorno] = useState("");
 
-  const [medicos, setMedicos] = useState(false);
-  const [clientes, setClientes] = useState(false);
+  const [clientes, setClientes] = useState();
+  const [agendamentos, setAgendamentos] = useState();
+  const [isClienteSelect, setIsClienteSelect] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [loadingSelects, setLoadingSelects] = useState(true);
 
   const getDadosForm = async (event) => {
     event.preventDefault();
@@ -36,8 +40,8 @@ function Form({ onSubmit, botaoEsquerdo, botaoDireito, cliqueEsquerdo, cliqueDir
     }
 
     const dadosModal = {
-      medicoId: medicoSelecionado.value,
-      clienteId: clienteSelecionado.value,
+      clienteId: clienteSelecionado?.value,
+      agendamentoId: agendamentoSelecionado?.value,
       nomePaciente,
       detalhes,
       observacoes,
@@ -48,7 +52,8 @@ function Form({ onSubmit, botaoEsquerdo, botaoDireito, cliqueEsquerdo, cliqueDir
 
     let salvoComSucesso = await onSubmit(dadosModal);
     if (salvoComSucesso) {
-      setMedicoSelecionado({});
+      setClienteSelecionado(undefined);
+      setAgendamentoSelecionado(undefined);
       setNomePaciente("");
       setDetalhes("");
       setObservacoes("");
@@ -78,26 +83,9 @@ function Form({ onSubmit, botaoEsquerdo, botaoDireito, cliqueEsquerdo, cliqueDir
     setDentes([...novoDenteMarcado]);
   }
 
-  const getSelectMedicos = async () => {
-    const response = await GetMedicos();
-
-    if (response.sucesso) {
-      const options = response.data.map(item => ({
-        value: item.id,
-        label: item.nome
-      }));
-
-      setMedicos(options)
-      return options;
-    }
-
-    toast.error("Erro ao carregar os medicos: " + response.mensagem);
-    return false;
-  }
-  
   const getSelectClientes = async () => {
     const response = await GetClientes();
-    
+
     if (response.sucesso) {
       const options = response.data.map(item => ({
         value: item.id,
@@ -107,19 +95,34 @@ function Form({ onSubmit, botaoEsquerdo, botaoDireito, cliqueEsquerdo, cliqueDir
       setClientes(options)
       return options;
     }
-    
-    toast.error("Erro ao carregar os clientes: " + response.mensagem);    
+
+    toast.error("Erro ao carregar os clientes: " + response.mensagem);
     return false;
   }
-  
+
+  const getSelectAgendamento = async () => {
+    const response = await GetAgendamentos();
+
+    if (response.sucesso) {
+      const options = response.data.map(item => ({
+        value: item.id,
+        label: item.nomeCliente + " - " + item.status
+      }));
+
+      setAgendamentos(options)
+      return options;
+    }
+
+    toast.error("Erro ao carregar os clientes: " + response.mensagem);
+    return false;
+  }
+
   const iniciaModal = async () => {
     iniciaDentes();
-    let medicos = await getSelectMedicos();
-    let clientes = await getSelectClientes();
-    
+
     if (dadosEditar) {
-      setMedicoSelecionado(medicos?.find(medico => medico.value === dadosEditar.medicoId))
-      setClienteSelecionado(clientes?.find(cliente => cliente.value === dadosEditar.clienteId));
+      if(!dadosEditar.agendamentoId)
+        setIsClienteSelect(true);
       setDetalhes(dadosEditar.detalhes || '');
       setObservacoes(dadosEditar.observacoes || '');
       setDataAtendimento(dadosEditar.dataAtendimento?.split('T')[0] || '');
@@ -129,7 +132,29 @@ function Form({ onSubmit, botaoEsquerdo, botaoDireito, cliqueEsquerdo, cliqueDir
     setLoading(false);
   }
 
+  const switchModified = async () => {
+    setLoadingSelects(true);
+    setClienteSelecionado(undefined);
+    setAgendamentoSelecionado(undefined);
+
+    if(isClienteSelect){
+      setClientes([]);
+      let clientes = await getSelectClientes();
+      if(dadosEditar)
+        setClienteSelecionado(clientes?.find(cliente => cliente.value === dadosEditar.clienteId));
+    }
+    else{
+      setAgendamentos([]);
+      let agendamentos = await getSelectAgendamento();
+      if(dadosEditar && dadosEditar.agendamentoId)
+        setAgendamentoSelecionado(agendamentos?.find(agendamento => agendamento.value === dadosEditar.agendamentoId));
+    }
+
+    setLoadingSelects(false);
+  }
+
   useEffect(() => iniciaModal, []);
+  useEffect(() => {switchModified()}, [isClienteSelect]);
 
   if (loading)
     return <>Carregando</>
@@ -137,31 +162,46 @@ function Form({ onSubmit, botaoEsquerdo, botaoDireito, cliqueEsquerdo, cliqueDir
   return (
     <main className='w-full h-full p-4'>
       <form onSubmit={getDadosForm} className="flex flex-col gap-1">
-        <MySelect
-          isDisabled={loading}
-          isLoading={loading}
-          isClearable={false}
-          isSearchable={true}
-          isRequired={true}
-          nome="Médico"
-          placeholder="Selecione um médico"
-          opcoes={medicos}
-          value={medicoSelecionado}
-          onChange={setMedicoSelecionado}
-        />
+        <div className='grid grid-cols-3 xl:grid-cols-5 relative'>
+          <SwitchOptions enabled={isClienteSelect} setEnabled={setIsClienteSelect} textoEsquerdo="Agendamento" textoDireito="Cliente" />
 
-        <MySelect
-          isDisabled={loading}
-          isLoading={loading}
-          isClearable={false}
-          isSearchable={true}
-          isRequired={true}
-          value={clienteSelecionado}
-          nome="Cliente"
-          placeholder="Selecione um cliente"
-          opcoes={clientes}
-          onChange={setClienteSelecionado}
-        />
+          <div className='col-span-2 xl:col-span-4'>
+            {!loadingSelects ?
+              <>
+                {isClienteSelect
+                  ?
+                  <MySelect
+                    isDisabled={loading}
+                    isLoading={loading}
+                    isClearable={false}
+                    isSearchable={true}
+                    isRequired={true}
+                    value={clienteSelecionado}
+                    nome="Cliente"
+                    placeholder="Selecione um cliente"
+                    opcoes={clientes}
+                    onChange={setClienteSelecionado}
+                  />
+                  :
+                  <MySelect
+                    isDisabled={loading}
+                    isLoading={loading}
+                    isClearable={false}
+                    isSearchable={true}
+                    isRequired={true}
+                    value={agendamentoSelecionado}
+                    nome="Cliente agendado"
+                    placeholder="Selecione um cliente com agendamento"
+                    opcoes={agendamentos}
+                    onChange={setAgendamentoSelecionado}
+                  />
+                }
+              </>
+              :
+              <InputLoading />
+            }
+          </div>
+        </div>
 
         <InputTextAreaForm
           inputId="detalhes"
