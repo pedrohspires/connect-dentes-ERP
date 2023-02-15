@@ -2,11 +2,11 @@ import React from 'react';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import { styled, keyframes } from '@stitches/react';
 import { violet, mauve, blackA } from '@radix-ui/colors';
-import {
-  HamburgerMenuIcon,
-} from '@radix-ui/react-icons';
+import { HamburgerMenuIcon } from '@radix-ui/react-icons';
+import { BiErrorCircle } from 'react-icons/bi';
 
 const AcoesDropdownMenu = ({ rowData, itens }) => {
+
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger asChild>
@@ -16,21 +16,31 @@ const AcoesDropdownMenu = ({ rowData, itens }) => {
       </DropdownMenu.Trigger>
 
       <DropdownMenu.Portal>
-        <DropdownMenuContent 
+        <DropdownMenuContent
           className="w-max bg-paleta-500 rounded-lg p-2 shadow-xl text-white"
         >
-          {itens.map(item => 
-            <DropdownMenuItem 
-              key={item.texto} 
-              onClick={() => item.acao(rowData)}
-              className="text-white rounded-md hover:bg-paleta-700 px-2"
-            >
+          {itens.length > 0
+            ?
+            itens.map(item =>
+              <DropdownMenuItem
+                key={item.texto}
+                onClick={() => item.acao(rowData)}
+                className="text-white rounded-md hover:bg-paleta-700 px-2"
+              >
+                <div className='w-5'>
+                  {item.icone || ''}
+                </div>
+                {item.texto}
+              </DropdownMenuItem>
+            )
+            :
+            <DropdownMenuItem className="text-white rounded-md hover:bg-paleta-700 px-2">
               <div className='w-5'>
-                {item.icone || ''}
+                <BiErrorCircle />
               </div>
-              {item.texto}
+              Permissões insuficientes
             </DropdownMenuItem>
-          )}
+          }
         </DropdownMenuContent>
       </DropdownMenu.Portal>
     </DropdownMenu.Root>
