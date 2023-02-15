@@ -2,7 +2,7 @@ import { AiFillCloseCircle } from 'react-icons/ai';
 
 function ModalHeader({ title, tag, onRequestClose }) {
   return (
-    <div className='w-full h-full flex justify-between p-4 bg-paleta-500 relative'>
+    <div className='w-full h-full flex justify-between p-4 bg-paleta-500 relative rounded-t-xl'>
       <div className='text-paleta-100 font-bold text-xl'>
         {title} <span className='font-normal text-base'>#{tag}</span>
       </div>
