@@ -162,7 +162,7 @@ function Form({ onSubmit, botaoEsquerdo, botaoDireito, cliqueEsquerdo, cliqueDir
   return (
     <main className='w-full h-full p-4'>
       <form onSubmit={getDadosForm} className="flex flex-col gap-1">
-        <div className='grid grid-cols-3 xl:grid-cols-5 relative'>
+        <div className='grid grid-flow-row grid-rows-2 md:grid-flow-col md:grid-cols-3 md:grid-rows-1 xl:grid-cols-5 relative'>
           <SwitchOptions enabled={isClienteSelect} setEnabled={setIsClienteSelect} textoEsquerdo="Agendamento" textoDireito="Cliente" />
 
           <div className='col-span-2 xl:col-span-4'>
@@ -221,8 +221,8 @@ function Form({ onSubmit, botaoEsquerdo, botaoDireito, cliqueEsquerdo, cliqueDir
           setValue={setObservacoes}
         />
 
-        <div className='grid grid-cols-3 justify-items-stretch gap-4'>
-          <div>
+        <div className='grid grid-cols-3 md:grid-cols-3 justify-items-stretch gap-4'>
+          <div className='col-span-3 md:col-span-1'>
             <InputForm
               inputId="dataAtendimento"
               type="date"
@@ -239,7 +239,7 @@ function Form({ onSubmit, botaoEsquerdo, botaoDireito, cliqueEsquerdo, cliqueDir
               setValue={setDataRetorno}
             />
           </div>
-          <div>
+          <div className='col-span-2 md:col-span-1'>
             <div className='font-bold'>Dentes</div>
             <div className='grid grid-cols-4 justify-self-center'>
               {dentes.map((dente, key) =>
@@ -252,7 +252,7 @@ function Form({ onSubmit, botaoEsquerdo, botaoDireito, cliqueEsquerdo, cliqueDir
               )}
             </div>
           </div>
-          <img src={arcadaDentaria} className="w-36 justify-self-center" alt="" />
+          <img src={arcadaDentaria} className="w-full md:w-36 justify-self-center" alt="" />
         </div>
 
         <ButtonsModal
