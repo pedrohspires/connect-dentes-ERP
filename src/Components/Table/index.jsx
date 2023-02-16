@@ -11,10 +11,11 @@ function Table({ columnsHeaders, rows, columns }) {
     let rowsTemp = ordenedRows;
 
     rowsTemp.sort((row1, row2) => {
-      if(row1[byColumn] > row2[byColumn])
+
+      if(columns[byColumn](row1[byColumn]) > columns[byColumn](row2[byColumn]))
         return ordenableColumns[byColumn].crescente ? -1 : 1;
 
-      if(row1[byColumn] < row2[byColumn])
+      if(columns[byColumn](row1[byColumn]) < columns[byColumn](row2[byColumn]))
         return ordenableColumns[byColumn].crescente ? 1 : -1;
 
       return 0;
@@ -36,8 +37,21 @@ function Table({ columnsHeaders, rows, columns }) {
     setOrdenableColumns(ordenableColumns);
   }
 
+  function getIconeOrdenacao(column) {
+    return column.ordenavel && (ordenableColumns[column.columnName]?.crescente ? <FaArrowAltCircleUp /> : <FaArrowAltCircleDown />);
+  }
+
+  function listaLinhasDaTabela() {
+    return ordenedRows.length > 0
+      &&
+      ordenedRows.map((row, key) => {
+        return <RowTable key={key} dataRow={row} columns={columns} columnsHeaders={columnsHeaders} />;
+      });
+  }
+
   useEffect(() => setOrdenedRows(rows), [rows]);
   useEffect(() => getOrdenableColumns(), []);
+  
   return (
     <div className="relative overflow-x-auto rounded-xl">
       <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -49,7 +63,8 @@ function Table({ columnsHeaders, rows, columns }) {
                 scope="col" 
                 className={`px-6 py-3 
                            ${(column.titulo == "Ações" || column.titulo == "Id") && "w-24"} 
-                           ${column.ordenavel && "cursor-pointer"}`}
+                           ${column.ordenavel && "cursor-pointer"}
+                           ${!column.showMobile && "hidden"}`}
                 onClick={() => {
                   if(column.ordenavel)
                     ordenaTabela(column.columnName);
@@ -57,18 +72,13 @@ function Table({ columnsHeaders, rows, columns }) {
               >
                 <div className='flex justify-between'>
                   <span>{column.titulo}</span>
-                  {column.ordenavel && (ordenableColumns[column.columnName]?.crescente ? <FaArrowAltCircleUp /> : <FaArrowAltCircleDown />)}
+                  {getIconeOrdenacao(column)}
                 </div>
               </th>)}
           </tr>
         </thead>
         <tbody>
-          { ordenedRows.length > 0 
-            && 
-            ordenedRows.map((row, key) => {
-              return <RowTable key={key} dataRow={row} columns={columns} />;
-            })
-          }
+          { listaLinhasDaTabela() }
         </tbody>
       </table>
       {ordenedRows.length == 0 && <EmptyTable />}
