@@ -107,7 +107,7 @@ function Form({ onSubmit, botaoEsquerdo, botaoDireito, cliqueEsquerdo, cliqueDir
           onChange={setClienteSelecionado}
         />
 
-        <div className='grid grid-cols-2 gap-1'>
+        <div className='grid grid-rows-2 md:grid-rows-1 md:grid-cols-2 md:gap-1'>
           <InputForm
             inputId="dataAgendada"
             type="date"

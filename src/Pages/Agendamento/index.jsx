@@ -21,25 +21,6 @@ function Agendamento() {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalDeleteOpen, setModalDeleteOpen] = useState(false);
 
-  const customModalStyle = {
-    content: {
-      width: '80%',
-      backgroundColor: "#cbdad5",
-      top: '50%',
-      left: '50%',
-      right: 'auto',
-      bottom: 'auto',
-      padding: '0px',
-      marginRight: '-50%',
-      borderRadius: '10px',
-      transform: 'translate(-50%, -50%)',
-      overflow: 'visible'
-    },
-    overlay: {
-      zIndex: 100,
-    }
-  }
-
   const customModalDeleteStyle = {
     content: {
       width: '50%',
@@ -167,11 +148,11 @@ function Agendamento() {
       <Table
         rows={dataTable}
         columnsHeaders={[
-          { titulo: "Id", ordenavel: true, columnName: "id" },
-          { titulo: "Cliente", ordenavel: true, columnName: "clienteId" },
+          { titulo: "Id", ordenavel: true, columnName: "id", showMobile: true },
+          { titulo: "Cliente", ordenavel: true, columnName: "cliente", showMobile: true },
           { titulo: "Data agendada", ordenavel: true, columnName: "dataAgendada" },
           { titulo: "Status", ordenavel: true, columnName: "status" },
-          { titulo: "Ações", ordenavel: false, columnName: "acoes" }
+          { titulo: "Ações", ordenavel: false, columnName: "acoes", showMobile: true }
         ]}
         columns={{
           id: (value) => value,
@@ -206,7 +187,14 @@ function Agendamento() {
         }}
       />
 
-      <Modal isOpen={modalOpen} onRequestClose={closeModal} style={customModalStyle}>
+      <Modal 
+        isOpen={modalOpen} 
+        onRequestClose={closeModal}
+        className="w-11/12 absolute drop-shadow-2xl bg-paleta-100 top-1/2 left-1/2 right-auto bottom-auto 
+                   p-0 -m-1/2 rounded-xl -translate-x-1/2 -translate-y-1/2
+                   xl:w-3/4"
+        overlayClassName="z-100 inset-0 fixed bg-paleta-100/50"
+      >
         <ModalHeader
           title="Agendamento"
           tag={idEditando ? idEditando : "Novo"}
