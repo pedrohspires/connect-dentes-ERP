@@ -151,11 +151,11 @@ function Atendimento() {
       <Table
         rows={dataTable}
         columnsHeaders={[
-          { titulo: "Id", ordenavel: true, columnName: "id" },
-          { titulo: "Paciente", ordenavel: true, columnName: "clienteId" },
-          { titulo: "Medico responsável", ordenavel: true, columnName: "medico" },
+          { titulo: "Id", ordenavel: true, columnName: "id", showMobile: true },
+          { titulo: "Paciente", ordenavel: true, columnName: "cliente", showMobile: true },
+          { titulo: "Medico responsável", ordenavel: true, columnName: "medico", },
           { titulo: "Detalhes", ordenavel: true, columnName: "detalhes" },
-          { titulo: "Ações", ordenavel: false, columnName: "acoes" }
+          { titulo: "Ações", ordenavel: false, columnName: "acoes", showMobile: true }
         ]}
         columns={{
           id: (value) => value,
