@@ -152,7 +152,10 @@ function Agendamento() {
 
   return (
     <div className="h-screen p-5 flex flex-col gap-4">
-      <div className="flex justify-end">
+      <div className="flex justify-between">
+        <div className='h-full grid content-center'>
+          <span className='text-2xl font-normal'>Agendamento</span>
+        </div>
         {acessos?.cadastrar &&
           <Button
             texto="Adicionar"

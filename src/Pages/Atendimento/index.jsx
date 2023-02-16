@@ -55,15 +55,15 @@ function Atendimento() {
 
   const carregaAcessos = async () => {
     const response = await GetAcessos("atendimento");
-    
-    if(response.sucesso){
+
+    if (response.sucesso) {
       setAcessos({
         listar: response.data.includes("listar"),
         cadastrar: response.data.includes("cadastrar"),
         editar: response.data.includes("editar"),
         excluir: response.data.includes("excluir")
       });
-    }else toast.error(response.mensagem);
+    } else toast.error(response.mensagem);
   }
 
   const iniciaPagina = async () => {
@@ -118,10 +118,10 @@ function Atendimento() {
     if (response.sucesso) {
       toast.success("Excluído com sucesso!");
       getDataTable();
-    }else{
+    } else {
       toast.error(response.mensagem);
     }
-    
+
     closeModalDelete();
   }
 
@@ -136,8 +136,11 @@ function Atendimento() {
   //#endregion
   return (
     <div className="h-screen p-5 flex flex-col gap-4">
-      <div className="flex justify-end">
-        { acessos?.cadastrar &&
+      <div className="flex justify-between">
+        <div className='h-full grid content-center'>
+          <span className='text-2xl font-normal'>Atendimento</span>
+        </div>
+        {acessos?.cadastrar &&
           <Button
             texto="Adicionar"
             onClick={adicionaAtendimento}
@@ -148,11 +151,11 @@ function Atendimento() {
       <Table
         rows={dataTable}
         columnsHeaders={[
-          {titulo: "Id", ordenavel: true, columnName: "id"},
-          {titulo: "Paciente", ordenavel: true, columnName: "clienteId"}, 
-          {titulo: "Medico responsável", ordenavel: true, columnName: "medico"}, 
-          {titulo: "Detalhes", ordenavel: true, columnName: "detalhes"}, 
-          {titulo: "Ações",  ordenavel: false, columnName: "acoes"}
+          { titulo: "Id", ordenavel: true, columnName: "id" },
+          { titulo: "Paciente", ordenavel: true, columnName: "clienteId" },
+          { titulo: "Medico responsável", ordenavel: true, columnName: "medico" },
+          { titulo: "Detalhes", ordenavel: true, columnName: "detalhes" },
+          { titulo: "Ações", ordenavel: false, columnName: "acoes" }
         ]}
         columns={{
           id: (value) => value,
@@ -182,9 +185,9 @@ function Atendimento() {
         }}
       />
 
-      <Modal 
-        isOpen={modalOpen} 
-        onRequestClose={closeModal} 
+      <Modal
+        isOpen={modalOpen}
+        onRequestClose={closeModal}
         className="w-11/12 absolute drop-shadow-2xl bg-paleta-100 top-1/2 left-1/2 right-auto bottom-auto 
                    p-0 -m-1/2 rounded-xl -translate-x-1/2 -translate-y-1/2
                    xl:w-3/4"
@@ -215,7 +218,7 @@ function Atendimento() {
         <main className='p-4'>
           Deseja deletar o atendimento <b>#{idExcluindo} - {dadosExcluindo?.detalhes}
           </b> do(a) paciente <b>{dadosExcluindo?.nomePaciente}</b>?
-        
+
           <ButtonsModal
             textoBtnEsquerdo={"Cancelar"}
             textoBtnDireito={"Confirmar"}
