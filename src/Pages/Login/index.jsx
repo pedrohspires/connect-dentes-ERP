@@ -22,7 +22,7 @@ function Login() {
 
   return (
     <main className="relative w-screen h-screen bg-paleta-900 grid place-items-center text-paleta-100">
-      <div className="login-form-container w-2/5 grid place-items-center">
+      <div className="login-form-container w-11/12 grid place-items-center lg:w-9/12 xl:w-6/12 2xl:w-1/3">
         <img src={logo} alt="Logo do site" className="w-64"/>
 
         <div className="login-form-content w-full bg-paleta-300 p-5 rounded-xl text-paleta-900">
