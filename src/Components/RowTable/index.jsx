@@ -10,7 +10,7 @@ function RowTable({ dataRow, columns, columnsHeaders }) {
             key={key}
             scope="row"
             className={`${key == 0 ? "px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white" : "px-6 py-4"}
-                        ${!columnsHeaders.find(columnHeader => columnHeader.columnName == [column])?.showMobile && "hidden"}`}
+                        ${!columnsHeaders.find(columnHeader => columnHeader.columnName == [column])?.showMobile && "hidden md:table-cell"}`}
           >
             {column === "acoes" ? columns[column](dataRow) : dataRow[column] !== null ? columns[column](dataRow[column]) : ""}
           </th>

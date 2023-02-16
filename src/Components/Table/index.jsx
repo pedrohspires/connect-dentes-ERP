@@ -64,7 +64,7 @@ function Table({ columnsHeaders, rows, columns }) {
                 className={`px-6 py-3 
                            ${(column.titulo == "Ações" || column.titulo == "Id") && "w-24"} 
                            ${column.ordenavel && "cursor-pointer"}
-                           ${!column.showMobile && "hidden"}`}
+                           ${!column.showMobile && "hidden md:table-cell"}`}
                 onClick={() => {
                   if(column.ordenavel)
                     ordenaTabela(column.columnName);
