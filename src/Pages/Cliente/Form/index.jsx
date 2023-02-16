@@ -163,17 +163,19 @@ function Form({ onSubmit, botaoEsquerdo, botaoDireito, cliqueEsquerdo, cliqueDir
           isRequired
         />
 
-        <div className='grid grid-cols-5 gap-4'>
-          <div className='col-span-2 grid grid-cols-2'>
-            <InputForm
-              inputId="telefone"
-              type="text"
-              nome="Telefone"
-              placeholder="(XX) XXXXX-XXXX"
-              value={telefone}
-              setValue={mascaraTelefone}
-              isRequired
-            />
+        <div className='grid grid-flow-row grid-rows-3 grid-cols-1 md:grid-flow-col md:grid-rows-1 md:grid-cols-5 md:gap-4'>
+          <div className='col-span-2 grid grid-cols-5 md:grid-cols-2'>
+            <div className='col-span-3 md:col-span-1'>
+              <InputForm
+                inputId="telefone"
+                type="text"
+                nome="Telefone"
+                placeholder="(XX) XXXXX-XXXX"
+                value={telefone}
+                setValue={mascaraTelefone}
+                isRequired
+              />
+            </div>
 
             <div className='grid content-end'>
               <InputCheckbox 
@@ -208,7 +210,7 @@ function Form({ onSubmit, botaoEsquerdo, botaoDireito, cliqueEsquerdo, cliqueDir
           </div>
         </div>
 
-        <div className='grid grid-cols-3 gap-4'>
+        <div className='grid grid-rows-3 md:grid-rows-1 md:grid-cols-3 md:gap-4'>
           <MySelect
             inputId="uf"
             nome="UF"
