@@ -15,13 +15,13 @@ function Login() {
     const response = await GetUsuarioLogado();
 
     if(token && response.sucesso)
-      navigate("/");
+      navigate("/Dashboard");
   }
 
   useEffect(() => {verificaUsuarioLogado()}, []);
 
   return (
-    <main className="relative w-screen h-screen bg-paleta-900 grid place-items-center text-paleta-100">
+    <main className="relative w-screen h-screen bg-paleta-900 grid place-items-center text-stone-100">
       <div className="login-form-container w-11/12 grid place-items-center lg:w-9/12 xl:w-6/12 2xl:w-1/3">
         <img src={logo} alt="Logo do site" className="w-64"/>
 
@@ -29,7 +29,7 @@ function Login() {
           <MenuForm 
             onClickEntrar={() => setTipoFormulario("entrar")}
             onClickCadastrar={() => setTipoFormulario("cadastrar")}
-            corBotao={(tipoBotao) => tipoFormulario === tipoBotao ? "bg-paleta-500" : "bg-paleta-100"}
+            corBotao={(tipoBotao) => tipoFormulario === tipoBotao ? "bg-paleta-500" : "bg-stone-100"}
           />
           {tipoFormulario === "entrar" ? <LoginForm /> : <RegisterForm />}
         </div>

@@ -3,6 +3,7 @@ import LayoutPage from "../Components/LayoutPage";
 import Agendamento from "../Pages/Agendamento";
 import Atendimento from "../Pages/Atendimento";
 import Cliente from "../Pages/Cliente";
+import Dashboard from "../Pages/Dashboard";
 import Login from "../Pages/Login";
 
 function Router() {
@@ -17,7 +18,11 @@ function Router() {
       children: [
         {
           path: "/",
-          element: <Atendimento />
+          element: <Dashboard />
+        },
+        {
+          path: "/Dashboard",
+          element: <Dashboard />
         },
         {
           path: "/Atendimento",
