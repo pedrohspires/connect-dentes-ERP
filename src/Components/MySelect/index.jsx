@@ -4,50 +4,23 @@ const MySelect = (props) => {
   const { nome, opcoes, isRequired, placeholder, className, opcaoDefault, value } = props;
   const { isDisabled, isLoading, isClearable, isSearchable, onChange } = props;
 
-  const customStyles = {
-    control: (base) => ({
-      ...base,
-      background: "#566981",
-      borderColor: '#566981',
-      textColor: "#ffffff",
-      "&:hover": {
-        borderColor: '#566981'
-      },
-    }),
-    placeholder: (base) => ({
-      ...base,
-      color: "#89a7b1"
-    }),
-    menu: (base) => ({
-      ...base,
-      background: "#566981",
-      boxShadow: "0 0 6px #000000"
-    }),
-    option: (base) => ({
-      ...base,
-      background: "#566981",
-      "&:hover": {
-        background: '#3a415a'
-      },
-    }),
-    singleValue: (base) => ({
-      ...base,
-      color: "#ffffff"
-    })
-  };
-
   return (
-    <div>
-      <label className='font-bold'>{nome} <b hidden={!isRequired} className='text-red-500'>*</b></label>
+    <div className='pb-2'>
+      <label className='font-bold dark:text-white dark:font-normal'>{nome} <b hidden={!isRequired} className='text-red-500'>*</b></label>
       <Select
-        className={className || "w-full bg-paleta-500 text-white rounded-md"}
+        unstyled
+        classNames={{
+          control: () => "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white",
+          placeholder: () => "text-gray-600 dark:text-gray-400",
+          menu: () => "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600",
+          option: () => "p-2 hover:bg-gray-300 text-gray-900 dark:text-white dark:hover:bg-gray-900"
+        }}
         defaultValue={opcaoDefault}
         value={value}
         isDisabled={isDisabled}
         isLoading={isLoading}
         isClearable={isClearable}
         isSearchable={isSearchable}
-        styles={customStyles}
         name={nome}
         options={opcoes}
         placeholder={placeholder}

@@ -8,6 +8,7 @@ import { GetAgendamentos, GetClientes } from '../../../Services/Atendimento';
 import { toast } from 'react-toastify';
 import SwitchOptions from '../../../Components/SwitchOptions';
 import InputLoading from '../../../Components/InputLoading';
+import InputArea from '../../../Components/InputArea'
 
 function Form({ onSubmit, botaoEsquerdo, botaoDireito, cliqueEsquerdo, cliqueDireito, dadosEditar }) {
   const [clienteSelecionado, setClienteSelecionado] = useState();
@@ -121,7 +122,7 @@ function Form({ onSubmit, botaoEsquerdo, botaoDireito, cliqueEsquerdo, cliqueDir
     iniciaDentes();
 
     if (dadosEditar) {
-      if(!dadosEditar.agendamentoId)
+      if (!dadosEditar.agendamentoId)
         setIsClienteSelect(true);
       setDetalhes(dadosEditar.detalhes || '');
       setObservacoes(dadosEditar.observacoes || '');
@@ -137,16 +138,16 @@ function Form({ onSubmit, botaoEsquerdo, botaoDireito, cliqueEsquerdo, cliqueDir
     setClienteSelecionado(undefined);
     setAgendamentoSelecionado(undefined);
 
-    if(isClienteSelect){
+    if (isClienteSelect) {
       setClientes([]);
       let clientes = await getSelectClientes();
-      if(dadosEditar)
+      if (dadosEditar)
         setClienteSelecionado(clientes?.find(cliente => cliente.value === dadosEditar.clienteId));
     }
-    else{
+    else {
       setAgendamentos([]);
       let agendamentos = await getSelectAgendamento();
-      if(dadosEditar && dadosEditar.agendamentoId)
+      if (dadosEditar && dadosEditar.agendamentoId)
         setAgendamentoSelecionado(agendamentos?.find(agendamento => agendamento.value === dadosEditar.agendamentoId));
     }
 
@@ -154,7 +155,7 @@ function Form({ onSubmit, botaoEsquerdo, botaoDireito, cliqueEsquerdo, cliqueDir
   }
 
   useEffect(() => iniciaModal, []);
-  useEffect(() => {switchModified()}, [isClienteSelect]);
+  useEffect(() => { switchModified() }, [isClienteSelect]);
 
   if (loading)
     return <>Carregando</>
@@ -162,9 +163,10 @@ function Form({ onSubmit, botaoEsquerdo, botaoDireito, cliqueEsquerdo, cliqueDir
   return (
     <main className='w-full h-full p-4'>
       <form onSubmit={getDadosForm} className="flex flex-col gap-1">
-        <div className='grid grid-flow-row grid-rows-2 md:grid-flow-col md:grid-cols-3 md:grid-rows-1 xl:grid-cols-5 relative'>
-          <SwitchOptions enabled={isClienteSelect} setEnabled={setIsClienteSelect} textoEsquerdo="Agendamento" textoDireito="Cliente" />
-
+        <InputArea >
+          <div className='py-5'>
+            <SwitchOptions enabled={isClienteSelect} setEnabled={setIsClienteSelect} textoEsquerdo="Agendamento" textoDireito="Cliente" />
+          </div>
           <div className='col-span-2 xl:col-span-4'>
             {!loadingSelects ?
               <>
@@ -201,59 +203,63 @@ function Form({ onSubmit, botaoEsquerdo, botaoDireito, cliqueEsquerdo, cliqueDir
               <InputLoading />
             }
           </div>
-        </div>
+        </InputArea>
 
-        <InputTextAreaForm
-          inputId="detalhes"
-          type="text"
-          nome="Detalhes"
-          placeholder="Detalhes da consulta"
-          value={detalhes}
-          setValue={setDetalhes}
-          isRequired
-        />
+        <InputArea>
+          <InputTextAreaForm
+            inputId="detalhes"
+            type="text"
+            nome="Detalhes"
+            placeholder="Detalhes da consulta"
+            value={detalhes}
+            setValue={setDetalhes}
+            isRequired
+          />
 
-        <InputTextAreaForm
-          inputId="observacoes"
-          nome="Observações"
-          placeholder="Observações"
-          value={observacoes}
-          setValue={setObservacoes}
-        />
+          <InputTextAreaForm
+            inputId="observacoes"
+            nome="Observações"
+            placeholder="Observações"
+            value={observacoes}
+            setValue={setObservacoes}
+          />
+        </InputArea>
 
-        <div className='grid grid-cols-3 md:grid-cols-3 justify-items-stretch gap-4'>
-          <div className='col-span-3 md:col-span-1'>
-            <InputForm
-              inputId="dataAtendimento"
-              type="date"
-              nome="Data atendimento"
-              value={dataAtendimento}
-              setValue={setDataAtendimento}
-              isRequired
-            />
-            <InputForm
-              inputId="dataRetorno"
-              type="date"
-              nome="Data retorno"
-              value={dataRetorno}
-              setValue={setDataRetorno}
-            />
-          </div>
-          <div className='col-span-2 md:col-span-1'>
-            <div className='font-bold'>Dentes</div>
-            <div className='grid grid-cols-4 justify-self-center'>
-              {dentes.map((dente, key) =>
-                <InputCheckbox
-                  key={key + 1}
-                  label={key + 1}
-                  checked={dente}
-                  onChange={setDentesOnChange}
-                />
-              )}
+        <InputArea>
+          <div className='grid grid-cols-3 md:grid-cols-3 justify-items-stretch gap-4'>
+            <div className='col-span-3 md:col-span-1'>
+              <InputForm
+                inputId="dataAtendimento"
+                type="date"
+                nome="Data atendimento"
+                value={dataAtendimento}
+                setValue={setDataAtendimento}
+                isRequired
+              />
+              <InputForm
+                inputId="dataRetorno"
+                type="date"
+                nome="Data retorno"
+                value={dataRetorno}
+                setValue={setDataRetorno}
+              />
             </div>
+            <div className='col-span-2 md:col-span-1'>
+              <div className='font-bold dark:text-white dark:font-normal'>Dentes</div>
+              <div className='grid grid-cols-4 justify-self-center'>
+                {dentes.map((dente, key) =>
+                  <InputCheckbox
+                    key={key + 1}
+                    label={key + 1}
+                    checked={dente}
+                    onChange={setDentesOnChange}
+                  />
+                )}
+              </div>
+            </div>
+            <img src={arcadaDentaria} className="w-full md:w-56 justify-self-center dark:invert" alt="" />
           </div>
-          <img src={arcadaDentaria} className="w-full md:w-36 justify-self-center" alt="" />
-        </div>
+        </InputArea>
 
         <ButtonsModal
           textoBtnEsquerdo={botaoEsquerdo}

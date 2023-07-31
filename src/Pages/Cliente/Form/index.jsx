@@ -6,6 +6,7 @@ import MySelect from '../../../Components/MySelect';
 import LoadingPage from '../../LoadingPage';
 import { GetSelectCidades, GetSelectUf } from '../../../Services/Cliente';
 import { toast } from 'react-toastify';
+import InputArea from '../../../Components/InputArea';
 
 function Form({ onSubmit, botaoEsquerdo, botaoDireito, cliqueEsquerdo, cliqueDireito, dadosEditar }) {
   const [nome, setNome] = useState("");
@@ -129,7 +130,7 @@ function Form({ onSubmit, botaoEsquerdo, botaoDireito, cliqueEsquerdo, cliqueDir
   const iniciaPagina = async () => {
     await getSelectUf();
 
-    if(dadosEditar)
+    if (dadosEditar)
       await preencheFormEditar();
 
     setLoading(false);
@@ -137,12 +138,12 @@ function Form({ onSubmit, botaoEsquerdo, botaoDireito, cliqueEsquerdo, cliqueDir
 
   useEffect(() => { iniciaPagina() }, []);
   useEffect(() => {
-    if(dadosEditar?.uf)
+    if (dadosEditar?.uf)
       setUfGetCidades(ufSelect.find(uf => uf.value === dadosEditar.uf));
-    
+
   }, [ufSelect])
   useEffect(() => {
-    if(dadosEditar?.cidade){
+    if (dadosEditar?.cidade) {
       setCidade(cidadesSelect.find(cidade => cidade.value === parseInt(dadosEditar.cidade)));
     }
   }, [cidadesSelect])
@@ -153,132 +154,138 @@ function Form({ onSubmit, botaoEsquerdo, botaoDireito, cliqueEsquerdo, cliqueDir
   return (
     <main className='w-full h-full p-4'>
       <form onSubmit={getDadosForm} className="flex flex-col gap-1">
-        <InputForm
-          inputId="nome"
-          type="text"
-          nome="Nome do cliente"
-          placeholder="Insira o nome do cliente"
-          value={nome}
-          setValue={setNome}
-          isRequired
-        />
+        <InputArea >
+          <InputForm
+            inputId="nome"
+            type="text"
+            nome="Nome do cliente"
+            placeholder="Insira o nome do cliente"
+            value={nome}
+            setValue={setNome}
+            isRequired
+          />
+        </InputArea>
 
-        <div className='grid grid-flow-row grid-rows-3 grid-cols-1 md:grid-flow-col md:grid-rows-1 md:grid-cols-5 md:gap-4'>
-          <div className='col-span-2 grid grid-cols-5 md:grid-cols-2'>
-            <div className='col-span-3 md:col-span-1'>
-              <InputForm
-                inputId="telefone"
-                type="text"
-                nome="Telefone"
-                placeholder="(XX) XXXXX-XXXX"
-                value={telefone}
-                setValue={mascaraTelefone}
-                isRequired
-              />
+        <InputArea>
+          <div className='grid grid-flow-row grid-rows-3 grid-cols-1 md:grid-flow-col md:grid-rows-1 md:grid-cols-5 md:gap-4'>
+            <div className='col-span-2 grid grid-cols-5 md:grid-cols-2'>
+              <div className='col-span-3 md:col-span-1'>
+                <InputForm
+                  inputId="telefone"
+                  type="text"
+                  nome="Telefone"
+                  placeholder="(XX) XXXXX-XXXX"
+                  value={telefone}
+                  setValue={mascaraTelefone}
+                  isRequired
+                />
+              </div>
+
+              <div className='grid content-end'>
+                <InputCheckbox
+                  id="isWhatsapp"
+                  label="Whatsapp"
+                  customClassName="flex items-center pl-3"
+                  checked={isWhatsapp}
+                  onChange={(value) => setIsWhatsapp(value)}
+                />
+              </div>
             </div>
 
-            <div className='grid content-end'>
-              <InputCheckbox 
-                id="isWhatsapp"
-                label="Whatsapp"
-                customClassName="flex items-center pl-3"
-                checked={isWhatsapp}
-                onChange={(value) => setIsWhatsapp(value)}
-              />
-            </div>
-          </div>
-
-          <InputForm
-            inputId="cpf"
-            type="text"
-            nome="CPF"
-            placeholder="000.000.000-00"
-            value={cpf}
-            setValue={mascaraCpf}
-            isRequired
-          />
-
-          <div className='col-span-2'>
             <InputForm
-              inputId="email"
-              type="email"
-              nome="E-mail"
-              placeholder="Digite seu e-mail"
-              value={email}
-              setValue={setEmail}
-            />
-          </div>
-        </div>
-
-        <div className='grid grid-rows-3 md:grid-rows-1 md:grid-cols-3 md:gap-4'>
-          <MySelect
-            inputId="uf"
-            nome="UF"
-            placeholder="Selecione"
-            defaultOption={uf}
-            value={uf}
-            onChange={setUfGetCidades}
-            opcoes={ufSelect}
-            isLoading={loadingSelects}
-            isRequired
-            isSearchable
-            isClearable
-          />
-
-          <MySelect
-            inputId="cidade"
-            nome="Cidade"
-            placeholder="Selecione"
-            defaultOption={cidade}
-            value={cidade}
-            onChange={setCidade}
-            opcoes={cidadesSelect}
-            isLoading={loadingSelects}
-            isRequired
-            isSearchable
-            isClearable
-          />
-
-          <InputForm
-            inputId="bairro"
-            type="text"
-            nome="Bairro"
-            placeholder="Bairro"
-            value={bairro}
-            setValue={setBairro}
-          />
-        </div>
-
-        <div className='grid grid-cols-4 gap-4'>
-          <div className='col-span-3'>
-            <InputForm
-              inputId="rua"
+              inputId="cpf"
               type="text"
-              nome="Rua"
-              placeholder="Rua"
-              value={rua}
-              setValue={setRua}
+              nome="CPF"
+              placeholder="000.000.000-00"
+              value={cpf}
+              setValue={mascaraCpf}
+              isRequired
+            />
+
+            <div className='col-span-2'>
+              <InputForm
+                inputId="email"
+                type="email"
+                nome="E-mail"
+                placeholder="Digite seu e-mail"
+                value={email}
+                setValue={setEmail}
+              />
+            </div>
+          </div>
+        </InputArea>
+
+        <InputArea>
+          <div className='grid grid-rows-3 md:grid-rows-1 md:grid-cols-3 md:gap-4'>
+            <MySelect
+              inputId="uf"
+              nome="UF"
+              placeholder="Selecione"
+              defaultOption={uf}
+              value={uf}
+              onChange={setUfGetCidades}
+              opcoes={ufSelect}
+              isLoading={loadingSelects}
+              isRequired
+              isSearchable
+              isClearable
+            />
+
+            <MySelect
+              inputId="cidade"
+              nome="Cidade"
+              placeholder="Selecione"
+              defaultOption={cidade}
+              value={cidade}
+              onChange={setCidade}
+              opcoes={cidadesSelect}
+              isLoading={loadingSelects}
+              isRequired
+              isSearchable
+              isClearable
+            />
+
+            <InputForm
+              inputId="bairro"
+              type="text"
+              nome="Bairro"
+              placeholder="Bairro"
+              value={bairro}
+              setValue={setBairro}
+            />
+          </div>
+
+          <div className='grid grid-cols-4 gap-4'>
+            <div className='col-span-3'>
+              <InputForm
+                inputId="rua"
+                type="text"
+                nome="Rua"
+                placeholder="Rua"
+                value={rua}
+                setValue={setRua}
+              />
+            </div>
+
+            <InputForm
+              inputId="numero"
+              type="text"
+              nome="Numero"
+              placeholder="Numero"
+              value={numero}
+              setValue={setNumero}
             />
           </div>
 
           <InputForm
-            inputId="numero"
+            inputId="complemento"
             type="text"
-            nome="Numero"
-            placeholder="Numero"
-            value={numero}
-            setValue={setNumero}
+            nome="Complemento"
+            placeholder="Complemento"
+            value={complemento}
+            setValue={setComplemento}
           />
-        </div>
-
-        <InputForm
-          inputId="complemento"
-          type="text"
-          nome="Complemento"
-          placeholder="Complemento"
-          value={complemento}
-          setValue={setComplemento}
-        />
+        </InputArea>
 
         <ButtonsModal
           textoBtnEsquerdo={botaoEsquerdo}

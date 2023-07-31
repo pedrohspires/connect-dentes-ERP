@@ -208,9 +208,9 @@ function Cliente() {
       <Modal 
         isOpen={modalOpen} 
         onRequestClose={closeModal} 
-        className="w-11/12 absolute drop-shadow-2xl bg-paleta-100 top-1/2 left-1/2 right-auto bottom-auto 
+        className="w-11/12 absolute drop-shadow-2xl bg-white top-1/2 left-1/2 right-auto bottom-auto 
                    p-0 -m-1/2 rounded-xl -translate-x-1/2 -translate-y-1/2
-                   xl:w-3/4"
+                   xl:w-3/4 dark:bg-gray-700"
         overlayClassName="z-100 inset-0 fixed bg-paleta-100/50"
       >
         <ModalHeader

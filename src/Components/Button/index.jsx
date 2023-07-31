@@ -3,13 +3,13 @@ import React from 'react'
 function Button({ texto, onClick, color, colorHover, textColor, textoColorHover, isSubmit }) {
   return (
     <button 
-      className={`w-28 rounded-xl mt-4 px-4 py-2 border-2
-                 text-${textColor || "paleta-100"}  
-                 bg-${color || "paleta-500"} border-paleta-900 hover:border-paleta-500 
-                 hover:bg-${colorHover || "paleta-700"}
-                 hover:text-${textoColorHover || "paleta-100"}`}
-      onClick={onClick}
       type={isSubmit ? "submit" : "button"}
+      className={`text-${textColor || "gray-100"}
+                  bg-${color || "gray-600"} 
+                  hover:bg-${colorHover || "gray-800"} 
+                  hover:text-${textoColorHover || "gray-100"}
+                  focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-600 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-600`}
+      onClick={onClick}
     >
       {texto}
     </button>

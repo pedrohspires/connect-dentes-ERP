@@ -1,20 +1,18 @@
 import { Link, Outlet, useNavigate } from 'react-router-dom';
-import { Fragment, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { getItensMenu } from '../../Services/Menu';
 import { GetUsuarioLogado } from '../../Services/Auth';
 
-import { GrFormClose } from 'react-icons/gr';
-import { HiMenuAlt2 } from 'react-icons/hi';
+import { IoExitOutline } from 'react-icons/io5';
+import { MdOutlineLightMode, MdOutlineNightlight } from 'react-icons/md';
 import * as icons from 'react-icons/all';
-import { Dialog, Menu, Transition } from '@headlessui/react';
-import * as ScrollArea from '@radix-ui/react-scroll-area';
-
-import logo from '../../Assets/Imagens/logo.png';
+import SwitchDefault from '../SwitchDefault';
 
 function LayoutPage() {
   const navigate = useNavigate();
   const [itensMenu, setItensMenu] = useState([]);
+  const [isDarkMode, setIsDarkMode] = useState(localStorage.theme === 'dark');
   const [menuOpen, setMenuOpen] = useState(false);
   const [usuarioLogado, setUsuarioLogado] = useState(false);
 
@@ -43,150 +41,70 @@ function LayoutPage() {
     navigate("/login");
   }
 
+  const handleTheme = () => {
+    if(!isDarkMode)
+      localStorage.theme = 'dark'
+    else
+      localStorage.theme = 'light'
+    
+    setIsDarkMode(!isDarkMode);
+  }
+
+  const loadTheme = () => {
+    if (localStorage.theme === 'dark') {
+      document.documentElement.classList.add('dark')
+    } else {
+      document.documentElement.classList.remove('dark')
+    }
+  }
+
   useEffect(() => { verificaUsuarioLogado() }, []);
   useEffect(() => { carregaItensMenu() }, []);
-  
+  useEffect(loadTheme, [isDarkMode]);
+
   return (
     <>
-      <Transition.Root show={menuOpen} as={Fragment}>
-        <Dialog as="div" className="fixed inset-0 flex z-40" onClose={setMenuOpen}>
-          <Transition.Child
-            as={Fragment}
-            enter="transition-opacity ease-linear duration-300"
-            enterFrom="opacity-0"
-            enterTo="opacity-100"
-            leave="transition-opacity ease-linear duration-300"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-          >
-            <Dialog.Overlay className="fixed inset-0 bg-gray-600 bg-opacity-75" />
-          </Transition.Child>
-          <Transition.Child
-            as={Fragment}
-            enter="transition ease-in-out duration-300 transform"
-            enterFrom="-translate-x-full"
-            enterTo="translate-x-0"
-            leave="transition ease-in-out duration-300 transform"
-            leaveFrom="translate-x-0"
-            leaveTo="-translate-x-full"
-          >
-            <div className="relative flex-1 flex flex-col max-w-xs w-full pb-4 bg-paleta-900">
-              <Transition.Child
-                as={Fragment}
-                enter="ease-in-out duration-300"
-                enterFrom="opacity-0"
-                enterTo="opacity-100"
-                leave="ease-in-out duration-300"
-                leaveFrom="opacity-100"
-                leaveTo="opacity-0"
-              >
-                <div className="absolute top-0 right-0 -mr-12 pt-2">
-                  <button
-                    type="button"
-                    className="ml-1 flex items-center justify-center h-10 w-10 rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
-                    onClick={() => setMenuOpen(false)}
-                  >
-                    <span className="sr-only">Close sidebar</span>
-                    <GrFormClose className="h-6 w-6 text-white" aria-hidden="true" />
-                  </button>
-                </div>
-              </Transition.Child>
-              <div className="flex-shrink-0 flex items-center px-4 pt-4">
-                <div className='flex flex-row items-end flex-wrap'>
-                  <img
-                    className="h-16"
-                    src={logo}
-                    alt="Workflow"
-                  />
-                </div>
-                {/* <p className='text-white text-2xl font-bold'>CompSys</p> */}
-              </div>
-              <div className="mt-5 flex-1 h-0 overflow-y-hidden">
-                <ScrollArea.Root>
-                  <ScrollArea.Viewport >
-                    <nav className="px-2 space-y-1">
-                      {itensMenu.map((item, key) => (
-                        <Link
-                          key={key}
-                          to={item.link}
-                          className='text-gray-300 hover:bg-paleta-500 hover:text-white group flex items-center px-2 py-2 text-base font-medium rounded-md'
-                        >
-                          <span className='px-2'>{icons[item.reactIcon]()}</span>
-                          {item.nome}
-                        </Link>
-                      ))}
-                    </nav>
-                  </ScrollArea.Viewport>
-                  <ScrollArea.Scrollbar orientation="horizontal">
-                    <ScrollArea.Thumb />
-                  </ScrollArea.Scrollbar>
-                  <ScrollArea.Scrollbar orientation="vertical">
-                    <ScrollArea.Thumb />
-                  </ScrollArea.Scrollbar>
-                  <ScrollArea.Corner />
-                </ScrollArea.Root>
-              </div>
-            </div>
-          </Transition.Child>
-          <div className="flex-shrink-0 w-14" aria-hidden="true">
-            {/* Dummy element to force sidebar to shrink to fit close icon */}
-          </div>
-        </Dialog>
-      </Transition.Root>
-      <div className={`flex flex-col ${menuOpen ? "md:pl-80" : ''}`}>
-        <div className="sticky top-0 z-40 flex-shrink-0 flex h-16 bg-paleta-900 shadow">
-          <button
-            type="button"
-            className={`${menuOpen ? 'hidden' : ''} px-4 border-r border-gray-200 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500`}
-            onClick={() => setMenuOpen(true)}
-          >
-            <span className="sr-only">Open sidebar</span>
-            <HiMenuAlt2 className="h-6 w-6" aria-hidden="true" />
-          </button>
-          <div className="flex-1 px-4 flex justify-end">
-            <div className="ml-4 flex items-center md:ml-6">
-              <Menu as="div" className="ml-3 relative">
-                <div>
-                  <Menu.Button className="max-w-xs px-4 py-2 bg-paleta-100 flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                    <span className="sr-only">Abrir menu</span>
-                    <h1 className='mr-4 font-semibold text-paleta-900'>{usuarioLogado.nome}</h1>
-                    <img
-                      className="object-contain h-8 w-8 rounded-full"
-                      src={"./user.png"}
-                      alt={"usuário"}
-                    />
-                  </Menu.Button>
-                </div>
-                <Transition
-                  as={Fragment}
-                  enter="transition ease-out duration-100"
-                  enterFrom="transform opacity-0 scale-95"
-                  enterTo="transform opacity-100 scale-100"
-                  leave="transition ease-in duration-75"
-                  leaveFrom="transform opacity-100 scale-100"
-                  leaveTo="transform opacity-0 scale-95"
-                >
-                  <Menu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-paleta-900 ring-1 ring-black ring-opacity-5 focus:outline-none">
-                    <Menu.Item>
-                      {() => (
-                        <div
-                          onClick={() => handleSair()}
-                          className='block px-4 py-2 text-sm text-paleta-100 cursor-pointer'
-                        >
-                          Sair
-                        </div>
-                      )}
-                    </Menu.Item>
-                  </Menu.Items>
-                </Transition>
-              </Menu>
-            </div>
-          </div>
-        </div>
+      <button data-drawer-target="separator-sidebar" data-drawer-toggle="separator-sidebar" aria-controls="separator-sidebar" type="button" className="inline-flex items-center p-2 mt-2 ml-3 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
+        <span className="sr-only">Open sidebar</span>
+        <svg className="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+          <path clipRule="evenodd" fillRule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
+        </svg>
+      </button>
 
-        <main className="flex-1 bg-paleta-100">
-          <Outlet />
-        </main>
+      <aside id="separator-sidebar" className="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar">
+        <div className="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
+          <ul className="space-y-2">
+            {itensMenu.map((item, key) => (
+              <Link
+                key={key}
+                to={item.link}
+                className='flex w-full items-center p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group'
+              >
+                <span className='px-2'>{icons[item.reactIcon]()}</span>
+                {item.nome}
+              </Link>
+            ))}
+          </ul>
+
+          <ul className="pt-4 mt-4 space-y-2 border-t border-gray-200 dark:border-gray-700">
+            <li>
+              <div className="flex w-full items-center p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group">
+                {isDarkMode ? <MdOutlineNightlight /> : <MdOutlineLightMode />}
+                <span className="ml-4"><SwitchDefault id="dark-mode-switch" text="Dark Mode" onChange={handleTheme} checked={isDarkMode} /></span>
+              </div>
+            </li>
+            <li>
+              <button onClick={handleSair} className="flex w-full items-center p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group">
+                <IoExitOutline />
+                <span className="ml-4">Sair</span>
+              </button>
+            </li>
+          </ul>
+        </div>
+      </aside>
+
+      <div className="p-4 sm:ml-64 bg-gray-200">
+        <Outlet />
       </div>
     </>
   )

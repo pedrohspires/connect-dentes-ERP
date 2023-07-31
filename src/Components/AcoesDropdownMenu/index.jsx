@@ -10,14 +10,14 @@ const AcoesDropdownMenu = ({ rowData, itens }) => {
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger asChild>
-        <IconButton aria-label="Customise options" className='bg-paleta-300 text-paleta-900'>
+        <IconButton aria-label="Customise options" className='bg-gray-300 text-gray-900'>
           <HamburgerMenuIcon />
         </IconButton>
       </DropdownMenu.Trigger>
 
       <DropdownMenu.Portal>
         <DropdownMenuContent
-          className="w-max bg-paleta-500 rounded-lg p-2 shadow-xl text-white"
+          className="w-max bg-gray-300 rounded-lg p-2 shadow-xl text-gray-900"
         >
           {itens.length > 0
             ?
@@ -25,7 +25,7 @@ const AcoesDropdownMenu = ({ rowData, itens }) => {
               <DropdownMenuItem
                 key={item.texto}
                 onClick={() => item.acao(rowData)}
-                className="text-white rounded-md hover:bg-paleta-700 px-2"
+                className="text-black rounded-md hover:bg-gray-700 px-2"
               >
                 <div className='w-5'>
                   {item.icone || ''}
@@ -34,7 +34,7 @@ const AcoesDropdownMenu = ({ rowData, itens }) => {
               </DropdownMenuItem>
             )
             :
-            <DropdownMenuItem className="text-white rounded-md hover:bg-paleta-700 px-2">
+            <DropdownMenuItem className="text-black rounded-md hover:bg-gray-700 px-2">
               <div className='w-5'>
                 <BiErrorCircle />
               </div>

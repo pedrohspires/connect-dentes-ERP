@@ -4,6 +4,7 @@ import { InputForm } from '../../../Components/InputForm';
 import MySelect from '../../../Components/MySelect';
 import { GetClientes, GetHorarios } from '../../../Services/Agendamento';
 import LoadingPage from '../../LoadingPage';
+import InputArea from '../../../Components/InputArea';
 
 function Form({ onSubmit, botaoEsquerdo, botaoDireito, cliqueEsquerdo, cliqueDireito, dadosEditar }) {
   const [clienteSelecionado, setClienteSelecionado] = useState();
@@ -68,7 +69,7 @@ function Form({ onSubmit, botaoEsquerdo, botaoDireito, cliqueEsquerdo, cliqueDir
 
   const iniciaModal = async () => {
     let clientes = await getSelectClientes();
-    
+
     if (dadosEditar) {
       let horariosDisponiveis = await carregaHorarios(dadosEditar.dataAgendada.split("T")[0]);
       let horarioIndex = horariosDisponiveis.findIndex(horario => horario.value == dadosEditar.dataAgendada.split("T")[0]);
@@ -94,45 +95,47 @@ function Form({ onSubmit, botaoEsquerdo, botaoDireito, cliqueEsquerdo, cliqueDir
   return (
     <main className='w-full h-full p-4'>
       <form onSubmit={getDadosForm} className="flex flex-col gap-1">
-        <MySelect
-          isDisabled={loading}
-          isLoading={loading}
-          isClearable={false}
-          isSearchable={true}
-          isRequired={true}
-          nome="Cliente"
-          placeholder="Selecione um cliente"
-          opcoes={clientes}
-          value={clienteSelecionado}
-          onChange={setClienteSelecionado}
-        />
-
-        <div className='grid grid-rows-2 md:grid-rows-1 md:grid-cols-2 md:gap-1'>
-          <InputForm
-            inputId="dataAgendada"
-            type="date"
-            nome="Data agendada"
-            value={dataAgendada}
-            setValue={(value) => {
-              carregaHorarios(value);
-              setDataAgendada(value);
-            }}
-            isRequired
-          />
-
+        <InputArea>
           <MySelect
             isDisabled={loading}
             isLoading={loading}
-            isClearable={true}
+            isClearable={false}
             isSearchable={true}
             isRequired={true}
-            nome="Horario"
-            placeholder="Selecione um horario"
-            opcoes={horarios}
-            value={horaAgendada}
-            onChange={setHoraAgendada}
+            nome="Cliente"
+            placeholder="Selecione um cliente"
+            opcoes={clientes}
+            value={clienteSelecionado}
+            onChange={setClienteSelecionado}
           />
-        </div>
+
+          <div className='grid grid-rows-2 md:grid-rows-1 md:grid-cols-2 md:gap-1'>
+            <InputForm
+              inputId="dataAgendada"
+              type="date"
+              nome="Data agendada"
+              value={dataAgendada}
+              setValue={(value) => {
+                carregaHorarios(value);
+                setDataAgendada(value);
+              }}
+              isRequired
+            />
+
+            <MySelect
+              isDisabled={loading}
+              isLoading={loading}
+              isClearable={true}
+              isSearchable={true}
+              isRequired={true}
+              nome="Horario"
+              placeholder="Selecione um horario"
+              opcoes={horarios}
+              value={horaAgendada}
+              onChange={setHoraAgendada}
+            />
+          </div>
+        </InputArea>
 
         <ButtonsModal
           textoBtnEsquerdo={botaoEsquerdo}

@@ -4,13 +4,12 @@ function SwitchOptions({ enabled, setEnabled, textoEsquerdo, textoDireito }) {
   return (
     <div className='w-full h-full relative'>
       <div className='flex gap-4 absolute top-1/2 -translate-y-1/2'>
-        <span className={`${!enabled ? "text-paleta-900" : "text-paleta-300"}`}>{textoEsquerdo}</span>
+        <span className={`${!enabled ? "text-gray-900 dark:text-white" : "text-gray-400 dark:text-gray-500"}`}>{textoEsquerdo}</span>
         <div>
           <Switch
             checked={enabled}
             onChange={setEnabled}
-            className={`${enabled ? 'bg-paleta-500' : 'bg-paleta-500'
-              } relative inline-flex h-6 w-14 items-center rounded-full`}
+            className={`bg-gray-300 relative inline-flex h-6 w-14 items-center rounded-full dark:bg-gray-700`}
           >
             <span
               className={`${enabled ? 'translate-x-9' : 'translate-x-1'
@@ -18,7 +17,7 @@ function SwitchOptions({ enabled, setEnabled, textoEsquerdo, textoDireito }) {
             />
           </Switch>
         </div>
-        <span className={`${!enabled ? "text-paleta-300" : "text-paleta-900"}`}>{textoDireito}</span>
+        <span className={`${!enabled ? "text-gray-400 dark:text-gray-500" : "text-gray-900 dark:text-white"}`}>{textoDireito}</span>
       </div>
     </div>
   )
